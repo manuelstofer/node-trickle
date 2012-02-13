@@ -12,23 +12,24 @@ half a second. Trickle prevents this from happening by keeping our
 functions and executing them when the time is right.
 
 Example
---------
+-------
 
 1 execution per 1000 milliseconds:
 
 ```javascript
-var Trickle = require('./lib/trickle').Trickle;
+var Trickle = require('trickle').Trickle;
 
-var trickle = new Trickle(1, 1000);
+var trickle = new Trickle(1000, function (){
+	console.log('done');
+});
 
 for (var i = 0; i < 10; i++) {
 	(function (_i) {
-		trickle.trickle(1, function (error) {
-			if (error) { console.log(error); return; }
+		trickle.trickle(function () {
 			console.log('ok ' + _i);
 		});
 	})(i);
 }
 ```
 
-The above code will output "ok 0", "ok 1", ..."ok 9", one line per second.
+The above code will output "ok 0", "ok 1", ..."ok 9", "done" one line per second.
