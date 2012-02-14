@@ -19,17 +19,56 @@ Example
 ```javascript
 var Trickle = require('trickle').Trickle;
 
+// create trickle with interval of 1000ms
+// the callback is called whenever the queue is empty
 var trickle = new Trickle(1000, function (){
-	console.log('done');
+	console.log('empty');
 });
 
-for (var i = 0; i < 10; i++) {
-	(function (_i) {
-		trickle.trickle(function () {
-			console.log('ok ' + _i);
-		});
-	})(i);
+// will output drop, drop, drop
+for (var i = 0; i < 3; i++) {
+	trickle.trickle(function () {
+		console.log('drop');
+	});
 }
+
+// trickle can be paused() and resumed()
+// will output pause, wait 3sec and resume
+trickle.trickle(function () {
+
+	console.log('pause');
+	trickle.pause();
+
+	setTimeout(function(){
+		console.log('resume');
+		trickle.resume();
+	}, 3000);
+});
+
+// more drops is printed right after (without waiting)
+trickle.trickle(function () {
+	console.log('more drops');
+});
+
+
+// using shove you can add a task in front of the queue
+trickle.shove(function () {
+	console.log('first');
+});
+
 ```
 
-The above code will output "ok 0", "ok 1", ..."ok 9", "done" one line per second.
+The above code will output: 
+
+```
+first			@0 ms
+drop			@1000 ms
+drop			@2000 ms
+drop			@3000 ms
+pause			@4000 ms
+resume			@5000 ms
+more drops		@5000 ms
+empty			@5000 ms
+
+```
+
