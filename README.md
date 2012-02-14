@@ -45,7 +45,8 @@ trickle.trickle(function () {
 	}, 3000);
 });
 
-// 'more drops' is printed right after 'resume' (without waiting)
+// 'more drops' is printed right after 'resume' without waiting,
+// because the last task 'pause' was 3 secs ago
 trickle.trickle(function () {
 	console.log('more drops');
 });
