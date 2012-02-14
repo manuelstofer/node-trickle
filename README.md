@@ -33,7 +33,7 @@ for (var i = 0; i < 3; i++) {
 }
 
 // trickle can be paused() and resumed()
-// will output pause, wait 3sec and resume
+// will output 'pause', wait 3sec and 'resume'
 trickle.trickle(function () {
 
 	console.log('pause');
@@ -45,7 +45,7 @@ trickle.trickle(function () {
 	}, 3000);
 });
 
-// more drops is printed right after (without waiting)
+// 'more drops' is printed right after 'resume' (without waiting)
 trickle.trickle(function () {
 	console.log('more drops');
 });
